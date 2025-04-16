@@ -32,10 +32,17 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-av",
+        {
+          "microphonePermission": false
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "assets": ["./assets/treat.mp3", "./assets/trick.mp3"]
   }
 }
