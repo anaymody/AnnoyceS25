@@ -5,11 +5,30 @@ import { Audio } from 'expo-av';
 // treat and trick options with paired audio and image assets
 const treatOptions = [
   { sound: require('../../assets/treat.mp3'), image: require('../../assets/images/Anay.png') },
-  { sound: require('../../assets/treat.mp3'), image: require('../../assets/images/Deborah.png') },
+  { sound: require('../../assets/vine_boom.mp3'), image: require('../../assets/images/Deborah.png') },
+  { sound: require('../../assets/kahoot.mp3'), image: require('../../assets/images/Joyce.png') },
+  { sound: require('../../assets/vine_boom.mp3'), image: require('../../assets/images/Hallie.jpg') },
+  { sound: require('../../assets/sparkles.mp3'), image: require('../../assets/images/Gabby.jpg') },
+  { sound: require('../../assets/sparkles.mp3'), image: require('../../assets/images/Josh.jpg') },
+  { sound: require('../../assets/tacobell.mp3'), image: require('../../assets/images/Val.jpg') },
+  { sound: require('../../assets/treat.mp3'), image: require('../../assets/images/lebron_james.png') },
+  { sound: require('../../assets/tacobell.mp3'), image: require('../../assets/images/lebron_james_2.jpg') },
+  { sound: require('../../assets/kahoot.mp3'), image: require('../../assets/images/redekopp.png') },
+  { sound: require('../../assets/treat.mp3'), image: require('../../assets/images/scopeheart.png') },
+  { sound: require('../../assets/billnye.mp3'), image: require('../../assets/images/billnye.png') },
+
 ];
 const trickOptions = [
-  { sound: require('../../assets/augh.m4a'), image: require('../../assets/images/Joyce.png') },
-  { sound: require('../../assets/augh.m4a'), image: require('../../assets/images/Joyce.png') },
+  { sound: require('../../assets/augh.m4a'), image: require('../../assets/images/anay_mog.png') },
+  { sound: require('../../assets/sad_violin.mp3'), image: require('../../assets/images/bald_anay.png') },
+  { sound: require('../../assets/bruh.mp3'), image: require('../../assets/images/bald_deborah.png') },
+  { sound: require('../../assets/rickroll.mp3'), image: require('../../assets/images/bald_josh.png') },
+  { sound: require('../../assets/augh.m4a'), image: require('../../assets/images/bald_joyce.png') },
+  { sound: require('../../assets/sad_violin.mp3'), image: require('../../assets/images/bald_malachi.png') },
+  { sound: require('../../assets/bruh.mp3'), image: require('../../assets/images/bald_ryan.png') },
+  { sound: require('../../assets/rickroll.mp3'), image: require('../../assets/images/bald_val.png') },
+  { sound: require('../../assets/augh.m4a'), image: require('../../assets/images/chris_eyes.png') },
+
 ];
 
 export default function TrickOrTreat() {
