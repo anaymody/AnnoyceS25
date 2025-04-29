@@ -1,61 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Audio } from 'expo-av';
 
 const screenWidth = Dimensions.get('window').width;
 
+// Sounds
+const matchSounds = [
+  require('../../assets/hehe.m4a'),
+  require('../../assets/ahh.m4a'),
+];
+
+const winSound = require('../../assets/Lebron.m4a'); // <-- WIN sound
+
 // All images
 const images = [
-	require('../../assets/images/Anay.png'),
-	require('../../assets/images/Deborah.png'),
-	require('../../assets/images/Joyce.png'),
-	require('../../assets/images/Hallie.jpg'),
-	require('../../assets/images/Gabby.jpg'),
-	require('../../assets/images/Josh.jpg'),
-	require('../../assets/images/Val.jpg'),
-	require('../../assets/images/lebron_james.png'),
-	require('../../assets/images/lebron_james_2.jpg'),
-	require('../../assets/images/redekopp.png'),
-	require('../../assets/images/scopeheart.png'),
-	require('../../assets/images/billnye.png'),
-	require('../../assets/images/anay_mog.png'),
-	require('../../assets/images/bald_anay.png'),
-	require('../../assets/images/bald_deborah.png'),
-	require('../../assets/images/bald_josh.png'),
-	require('../../assets/images/bald_joyce.png'),
-	require('../../assets/images/bald_malachi.png'),
-	require('../../assets/images/bald_ryan.png'),
-	require('../../assets/images/bald_val.png'),
-	require('../../assets/images/chris_eyes.png'),
-  
-	require('../../assets/images/Ayoub.jpg'),
-	require('../../assets/images/Ellie.jpg'),
-	require('../../assets/images/Jared.jpg'),
-	require('../../assets/images/Joel.jpg'),
-	require('../../assets/images/John.jpg'),
-	require('../../assets/images/Malachi.jpg'),
-	
-	require('../../assets/images/Ryan.jpg'),
-	require('../../assets/images/Luke.jpg'),
-	require('../../assets/images/Max.jpg'),
-	require('../../assets/images/Lucas.jpg'),
-	require('../../assets/images/Ayoub.jpg')
-  ];
+  require('../../assets/images/Anay.png'),
+  require('../../assets/images/Deborah.png'),
+  require('../../assets/images/Joyce.png'),
+  require('../../assets/images/Hallie.jpg'),
+  require('../../assets/images/Gabby.jpg'),
+  require('../../assets/images/Josh.jpg'),
+  require('../../assets/images/Val.jpg'),
+  require('../../assets/images/lebron_james.png'),
+  require('../../assets/images/lebron_james_2.jpg'),
+  require('../../assets/images/redekopp.png'),
+  require('../../assets/images/scopeheart.png'),
+  require('../../assets/images/billnye.png'),
+  require('../../assets/images/anay_mog.png'),
+  require('../../assets/images/bald_anay.png'),
+  require('../../assets/images/bald_deborah.png'),
+  require('../../assets/images/bald_josh.png'),
+  require('../../assets/images/bald_joyce.png'),
+  require('../../assets/images/bald_malachi.png'),
+  require('../../assets/images/bald_ryan.png'),
+  require('../../assets/images/bald_val.png'),
+  require('../../assets/images/chris_eyes.png'),
+  require('../../assets/images/Ayoub.jpg'),
+  require('../../assets/images/Ellie.jpg'),
+  require('../../assets/images/Jared.jpg'),
+  require('../../assets/images/Joel.jpg'),
+  require('../../assets/images/John.jpg'),
+  require('../../assets/images/Malachi.jpg'),
+  require('../../assets/images/Ryan.jpg'),
+  require('../../assets/images/Luke.jpg'),
+  require('../../assets/images/Max.jpg'),
+  require('../../assets/images/Lucas.jpg'),
+];
 
 // Duplicate and shuffle images
 const prepareCards = () => {
-	const shuffledImages = [...images].sort(() => Math.random() - 0.5); // randomize
-	const selectedImages = shuffledImages.slice(0, 8); // pick 8 random unique ones
-	const cards = [...selectedImages, ...selectedImages] // duplicate for pairs
-	  .map((image, index) => ({
-		id: index.toString(),
-		image,
-		isFlipped: false,
-		isMatched: false
-	  }))
-	  .sort(() => Math.random() - 0.5); // shuffle pairs
-	return cards;
-  };
+  const uniqueImages = Array.from(new Set(images)); // Deduplicate
+  const shuffledImages = [...uniqueImages].sort(() => Math.random() - 0.5);
+  const selectedImages = shuffledImages.slice(0, 8);
+  const cards = [...selectedImages, ...selectedImages]
+    .map((image, index) => ({
+      id: index.toString(),
+      image,
+      isFlipped: false,
+      isMatched: false,
+    }))
+    .sort(() => Math.random() - 0.5);
+  return cards;
+};
 
 export default function MatchingGame() {
   const router = useRouter();
@@ -68,8 +75,30 @@ export default function MatchingGame() {
   useEffect(() => {
     if (cards.length > 0 && cards.every(card => card.isMatched)) {
       setWon(true);
+      playWinSound(); // Play LeBron sound when won
     }
   }, [cards]);
+
+  const playRandomSound = async () => {
+    const randomSoundFile = matchSounds[Math.floor(Math.random() * matchSounds.length)];
+    const { sound } = await Audio.Sound.createAsync(randomSoundFile);
+    await sound.playAsync();
+    sound.setOnPlaybackStatusUpdate(status => {
+      if (status.isLoaded && status.didJustFinish) {
+        sound.unloadAsync();
+      }
+    });
+  };
+
+  const playWinSound = async () => {
+    const { sound } = await Audio.Sound.createAsync(winSound);
+    await sound.playAsync();
+    sound.setOnPlaybackStatusUpdate(status => {
+      if (status.isLoaded && status.didJustFinish) {
+        sound.unloadAsync();
+      }
+    });
+  };
 
   const handleCardPress = (card: any) => {
     if (lockBoard || card.isFlipped || card.isMatched) return;
@@ -90,9 +119,9 @@ export default function MatchingGame() {
           c.image === flippedCard.image ? { ...c, isMatched: true } : c
         );
         setCards(updatedCards);
+        playRandomSound(); // Play random match sound
         resetTurn();
       } else {
-        // Not a match
         setTimeout(() => {
           const resetCards = updatedCards(newCards, [firstCard.id, flippedCard.id]);
           setCards(resetCards);
@@ -162,7 +191,7 @@ export default function MatchingGame() {
   );
 }
 
-const cardSize = (screenWidth - 60) / 4; // 4 cards per row
+const cardSize = (screenWidth - 60) / 4;
 
 const styles = StyleSheet.create({
   container: {

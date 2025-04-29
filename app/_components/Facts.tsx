@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Audio } from 'expo-av'; // <-- Add this
+
+const boomSound = require('../../assets/vine_boom.mp3'); // <-- Load your boom.mp3 file
 
 export default function RandomFact() {
   const router = useRouter();
   const [fact, setFact] = useState('');
   const [loading, setLoading] = useState(true);
+
+  const playBoomSound = async () => {
+    const { sound } = await Audio.Sound.createAsync(boomSound);
+    await sound.playAsync();
+    sound.setOnPlaybackStatusUpdate(status => {
+      if (status.isLoaded && status.didJustFinish) {
+        sound.unloadAsync();
+      }
+    });
+  };
 
   const fetchFact = async () => {
     setLoading(true);
@@ -17,6 +30,7 @@ export default function RandomFact() {
       });
       const data = await response.json();
       setFact(data.text);
+      await playBoomSound(); // <<< Play boom sound when new fact is loaded
     } catch (error) {
       console.error('Error fetching fact:', error);
       setFact('Could not load a useless fact. Please try again.');

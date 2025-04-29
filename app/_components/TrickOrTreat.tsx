@@ -8,7 +8,10 @@ const trickSounds = [
   require('../../assets/augh.m4a'),
   require('../../assets/sad_violin.mp3'),
   require('../../assets/bruh.mp3'),
-  require('../../assets/rickroll.mp3'),
+  require('../../assets/rickroll.m4a'),
+  require('../../assets/Social_Siren.m4a'),
+  require('../../assets/Roblox.m4a'),
+  require('../../assets/billnye.m4a'),
 ];
 
 const treatSounds = [
@@ -16,7 +19,7 @@ const treatSounds = [
   require('../../assets/vine_boom.mp3'),
   require('../../assets/sparkles.mp3'),
   require('../../assets/tacobell.mp3'),
-  require('../../assets/billnye.mp3'),
+  require('../../assets/billnye.m4a'),
 ];
 
 // Random images pool
@@ -61,7 +64,7 @@ export default function TrickOrTreat() {
   const router = useRouter();
   const [loadedTrickSounds, setLoadedTrickSounds] = useState<Audio.Sound[]>([]);
   const [loadedTreatSounds, setLoadedTreatSounds] = useState<Audio.Sound[]>([]);
-  const [imageSource, setImageSource] = useState(require('../../assets/images/pumpkin.png'));
+  const [imageSource, setImageSource] = useState(null);
 
   // preload all sounds on mount
   useEffect(() => {

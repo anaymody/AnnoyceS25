@@ -8,11 +8,16 @@ export default function Sounds() {
    
     { id: '1', label: 'sparkles', soundFile: require('../../assets/sparkles.mp3') },
     { id: '2', label: 'tacobell', soundFile: require('../../assets/tacobell.mp3') },
-    { id: '3', label: 'billnye', soundFile: require('../../assets/billnye.mp3') },
+    { id: '3', label: 'billnye', soundFile: require('../../assets/billnye.m4a') },
     { id: '4', label: 'augh', soundFile: require('../../assets/augh.m4a') },
-    { id: '5', label: 'sad_violin', soundFile: require('../../assets/sad_violin.mp3') },
+    { id: '5', label: 'sad violin', soundFile: require('../../assets/sad_violin.mp3') },
     { id: '6', label: 'bruh', soundFile: require('../../assets/bruh.mp3') },
-    { id: '7', label: 'rickroll', soundFile: require('../../assets/rickroll.mp3') },
+    { id: '7', label: 'Rickroll', soundFile: require('../../assets/rickroll.m4a') },
+    { id: '8', label: 'Boom', soundFile: require('../../assets/vine_boom.mp3') },
+    { id: '9', label: 'Siren', soundFile: require('../../assets/Social_Siren.m4a') },
+    { id: '10', label: 'Roblox', soundFile: require('../../assets/Roblox.m4a') },
+    { id: '11', label: 'Hell', soundFile: require('../../assets/WhatTheHell.m4a') }
+    
   ];
   
 

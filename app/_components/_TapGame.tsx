@@ -1,12 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Audio } from 'expo-av'; // <<< Add this
+
+const { width, height } = Dimensions.get('window');
+
+// import the sound file
+const soundFile = require('../../assets/hehe.m4a'); // <<< Make sure the path is correct!
 
 export default function MiniGame() {
   const router = useRouter();
   const [count, setCount] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
   const [gameOver, setGameOver] = useState(false);
+  const [buttonPosition, setButtonPosition] = useState({ top: height / 2, left: width / 2 });
+  const [sound, setSound] = useState<Audio.Sound | null>(null); // <<< Add this
+
+  // preload the sound
+  useEffect(() => {
+    let isMounted = true;
+
+    (async () => {
+      const { sound } = await Audio.Sound.createAsync(soundFile, { shouldPlay: false });
+      if (isMounted) {
+        setSound(sound);
+      }
+    })();
+
+    return () => {
+      isMounted = false;
+      if (sound) {
+        sound.unloadAsync();
+      }
+    };
+  }, []);
 
   // countdown timer
   useEffect(() => {
@@ -18,16 +45,31 @@ export default function MiniGame() {
     return () => clearTimeout(timerId);
   }, [timeLeft]);
 
-  const handleTap = () => {
+  const handleTap = async () => {
     if (!gameOver) {
       setCount(prev => prev + 1);
+      moveButtonRandomly();
+      if (sound) {
+        await sound.replayAsync(); // <<< Play the sound on tap
+      }
     }
+  };
+
+  const moveButtonRandomly = () => {
+    const buttonSize = 100; // approximate button size
+    const padding = 50; // prevent it from being too close to edges
+
+    const randomLeft = Math.random() * (width - buttonSize - padding * 2) + padding;
+    const randomTop = Math.random() * (height - buttonSize - padding * 2) + padding;
+
+    setButtonPosition({ top: randomTop, left: randomLeft });
   };
 
   const resetGame = () => {
     setCount(0);
     setTimeLeft(10);
     setGameOver(false);
+    setButtonPosition({ top: height / 2, left: width / 2 });
   };
 
   return (
@@ -35,14 +77,18 @@ export default function MiniGame() {
       <Text style={styles.title}>Tap Frenzy!</Text>
       <Text style={styles.timer}>Time Left: {timeLeft}s</Text>
 
-      <TouchableOpacity
-        style={[styles.tapButton, gameOver && styles.disabled]}
-        onPress={handleTap}
-        disabled={gameOver}
-        activeOpacity={0.8}
-      >
-        <Text style={styles.tapText}>Tap Me!</Text>
-      </TouchableOpacity>
+      {!gameOver && (
+        <TouchableOpacity
+          style={[
+            styles.tapButton,
+            { top: buttonPosition.top, left: buttonPosition.left },
+          ]}
+          onPress={handleTap}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.tapText}>Tap Me!</Text>
+        </TouchableOpacity>
+      )}
 
       <Text style={styles.score}>Score: {count}</Text>
 
@@ -68,39 +114,27 @@ export default function MiniGame() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#1A1A1D',
     padding: 20,
-  },
-  button: {
-    backgroundColor: '#FF7518',
-    paddingVertical: 15,
-    paddingHorizontal: 25,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: '#FFF',
-    marginTop: 10,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: '#FFA500',
-    marginBottom: 10,
+    textAlign: 'center',
+    marginTop: 20,
   },
   timer: {
     fontSize: 18,
     color: '#FFF',
-    marginBottom: 20,
+    textAlign: 'center',
+    marginVertical: 10,
   },
   tapButton: {
+    position: 'absolute',
     backgroundColor: '#FF7518',
     padding: 20,
     borderRadius: 50,
-    marginVertical: 20,
-  },
-  disabled: {
-    backgroundColor: '#555',
   },
   tapText: {
     fontSize: 24,
@@ -110,18 +144,18 @@ const styles = StyleSheet.create({
   score: {
     fontSize: 24,
     color: '#FFF',
-    marginBottom: 20,
+    textAlign: 'center',
+    marginTop: 20,
   },
   resetButton: {
-    width: 200, 
+    marginTop: 20,
+    width: 200,
     alignItems: 'center',
     paddingVertical: 15,
     borderRadius: 10,
     backgroundColor: '#FFA500',
     marginBottom: 10,
   },
-  
-  
   resetText: {
     fontSize: 18,
     fontWeight: 'bold',

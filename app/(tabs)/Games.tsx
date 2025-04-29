@@ -9,7 +9,7 @@ export default function Games() {
 
   return (
     <View style={styles.container}>
-      
+
       <TouchableOpacity
         style={styles.button}
         onPress={() => router.push('../_components/TrickOrTreat')}
@@ -42,6 +42,14 @@ export default function Games() {
         <Text style={styles.buttonText}>Matching</Text>
       </TouchableOpacity>
 
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => router.push('../_components/OverHeard')}
+        activeOpacity={0.8}
+      >
+        <Text style={styles.buttonText}>OverHeardInScope</Text>
+      </TouchableOpacity>
+
     </View>
   );
 }
@@ -56,8 +64,10 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#FF7518',
-    paddingVertical: 15,
-    paddingHorizontal: 25,
+    width: 250,             
+    height: 60,            
+    justifyContent: 'center', 
+    alignItems: 'center',     
     borderRadius: 10,
     borderWidth: 2,
     borderColor: '#FFF',
