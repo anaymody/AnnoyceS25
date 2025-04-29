@@ -1,14 +1,20 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import SoundButton from '../../components/SoundButton';
+import SoundButton from '../_components/_SoundButton'; 
 
 export default function Sounds() {
-  const buttons = Array.from({ length: 8 }, (_, i) => ({
-    id: i.toString(),
-    label: 'Augh',
-    soundFile: require('../../assets/augh.m4a'),
-  }));
+  const buttons = [
+   
+    { id: '1', label: 'sparkles', soundFile: require('../../assets/sparkles.mp3') },
+    { id: '2', label: 'tacobell', soundFile: require('../../assets/tacobell.mp3') },
+    { id: '3', label: 'billnye', soundFile: require('../../assets/billnye.mp3') },
+    { id: '4', label: 'augh', soundFile: require('../../assets/augh.m4a') },
+    { id: '5', label: 'sad_violin', soundFile: require('../../assets/sad_violin.mp3') },
+    { id: '6', label: 'bruh', soundFile: require('../../assets/bruh.mp3') },
+    { id: '7', label: 'rickroll', soundFile: require('../../assets/rickroll.mp3') },
+  ];
+  
 
   return (
     <View style={styles.container}>

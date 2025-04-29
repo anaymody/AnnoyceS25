@@ -22,7 +22,7 @@ export default function RootLayout() {
         }}
       >
         <Tabs.Screen
-          name="(tabs)/index"
+          name="index"
           options={{
             title: 'Home',
             
@@ -33,16 +33,16 @@ export default function RootLayout() {
           }}
         />
         <Tabs.Screen
-          name="(tabs)/TrickOrTreat"
+          name="Games"
           options={{
-            title: 'TrickOrTreat',
+            title: 'Games',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons  name="ghost" color={color} size={size} />
             ),
           }}
         />
         <Tabs.Screen
-          name="(tabs)/sounds"
+          name="sounds"
           options={{
             title: 'Sounds',
             tabBarIcon: ({ color, size }) => (
@@ -50,6 +50,7 @@ export default function RootLayout() {
             ),
           }}
         />
+        
       </Tabs>
     </ThemeProvider>
   );
